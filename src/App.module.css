@@ -1,0 +1,155 @@
+.root {
+  min-height: 100vh;
+  background: var(--bg);
+  padding-bottom: 4rem;
+}
+
+/* ── Header ── */
+.header {
+  background: linear-gradient(180deg, #111 0%, var(--bg) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 2.5rem 1.5rem 2rem;
+  text-align: center;
+}
+
+.eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  font-family: var(--font-mono);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 400;
+  color: #f0f0f0;
+  line-height: 1.1;
+}
+
+.titleAccent { color: var(--gold); }
+
+.subtitle {
+  margin-top: 0.8rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+/* ── Main ── */
+.main {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 1.2rem;
+}
+
+/* ── Status Card ── */
+.statusCard {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.statusTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.2rem;
+}
+
+.statusEyebrow {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+
+.statusValue {
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.statusGoal {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--text-sub);
+}
+
+.progressTrack {
+  height: 3px;
+  background: #1a1a1a;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.progressMeta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* ── Tabs ── */
+.tabs {
+  display: flex;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.tab {
+  flex: 1;
+  padding: 0.65rem 0;
+  border: none;
+  border-right: 1px solid var(--border);
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: capitalize;
+  font-family: var(--font-mono);
+  transition: all 0.2s;
+}
+
+.tab:last-child { border-right: none; }
+
+.tabActive {
+  background: #1a1a1a;
+  color: var(--gold);
+}
+
+/* ── Footer ── */
+.disclaimer {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.62rem;
+  color: #333;
+  letter-spacing: 0.08em;
+}
+
+.resetBtn {
+  background: none;
+  border: none;
+  color: #444;
+  cursor: pointer;
+  font-size: 0.62rem;
+  text-decoration: underline;
+  font-family: inherit;
+}
+
+.resetBtn:hover { color: var(--red); }

@@ -1,0 +1,53 @@
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Tokens ── */
+:root {
+  --bg:        #0a0a0a;
+  --surface:   #0f0f0f;
+  --border:    #1c1c1c;
+  --border-sub:#141414;
+  --gold:      #c9a84c;
+  --gold-dark: #8a6a1e;
+  --text:      #d0d0d0;
+  --text-sub:  #888;
+  --text-muted:#555;
+  --text-dim:  #444;
+  --green:     #5ab38a;
+  --green-bg:  #0a1a10;
+  --green-border:#1a3a20;
+  --red:       #c46a4a;
+  --red-bg:    #1a0f0a;
+  --red-border:#3a1a10;
+  --blue:      #7fb3c8;
+  --font-serif:'Cormorant Garamond', Georgia, serif;
+  --font-mono: 'DM Mono', 'Courier New', monospace;
+  --font-sans: var(--font-serif); /* default body */
+  --radius:    2px;
+}
+
+/* ── Base ── */
+html { font-size: 16px; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-serif);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+/* ── Range input thumb ── */
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  cursor: pointer;
+  border: 2px solid var(--bg);
+}
