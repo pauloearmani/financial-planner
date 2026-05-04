@@ -4,28 +4,56 @@ import { fmt } from '../utils/formatters'
 import styles from './Tab.module.css'
 
 export function GoalsTab({ state, calc, updateGoal }) {
-  const { goals } = state
-  const { totalGoal } = calc
+  const { goals, horizonYears } = state
+  const { totalGoal, goalMilestones } = calc
+
+  const milestoneMap = Object.fromEntries(goalMilestones.map(m => [m.id, m]))
 
   return (
     <div>
       <div className={styles.card}>
         <div className={styles.cardTitle}>Ajuste suas metas</div>
-        {Object.entries(goals).map(([id, g]) => (
-          <div key={id} style={{ marginBottom: '1.8rem' }}>
-            <div className={styles.goalHeader}>
-              <span style={{ color: g.color }}>{g.icon}</span>
-              <span className={styles.goalLabel}>{g.label}</span>
+        {Object.entries(goals).map(([id, g]) => {
+          const m = milestoneMap[id]
+
+          const timeText =
+            m.yearsToGoal === null
+              ? `Fora do prazo (> ${horizonYears} anos)`
+              : m.yearsToGoal === 0 && m.monthsToGoal === 0
+              ? 'Já atingida'
+              : m.monthsToGoal === 0
+              ? `~${m.yearsToGoal} anos (aos ${m.ageAtGoal})`
+              : `~${m.yearsToGoal} anos e ${m.monthsToGoal} meses (aos ${m.ageAtGoal})`
+
+          return (
+            <div key={id} style={{ marginBottom: '1.8rem' }}>
+              <div className={styles.goalHeader}>
+                <span style={{ color: g.color }}>{g.icon}</span>
+                <input
+                  className={styles.goalNameInput}
+                  type="text"
+                  value={g.label}
+                  onChange={e => updateGoal(id, { label: e.target.value })}
+                  placeholder="Nome do objetivo"
+                />
+              </div>
+              <Slider
+                label=""
+                min={500000} max={10000000} step={100000}
+                value={g.value}
+                onChange={v => updateGoal(id, { value: v })}
+                format={fmt}
+              />
+              <div className={styles.goalMilestone}>
+                {m.pctCovered.toFixed(1)}% já coberto
+                {' · '}
+                <span className={m.yearsToGoal !== null ? styles.goalMilestoneGood : styles.goalMilestoneBad}>
+                  {timeText}
+                </span>
+              </div>
             </div>
-            <Slider
-              label=""
-              min={500000} max={10000000} step={100000}
-              value={g.value}
-              onChange={v => updateGoal(id, v)}
-              format={fmt}
-            />
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       <div className={styles.card}>

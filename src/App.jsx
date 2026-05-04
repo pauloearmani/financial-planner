@@ -1,37 +1,40 @@
 import { useState } from 'react'
 import { useFinancialPlan } from './hooks/useFinancialPlan'
-import { OverviewTab }    from './components/OverviewTab'
-import { GoalsTab }       from './components/GoalsTab'
-import { ProjectionTab }  from './components/ProjectionTab'
-import { fmt }            from './utils/formatters'
-import styles             from './App.module.css'
+import { ProfileTab }    from './components/ProfileTab'
+import { OverviewTab }   from './components/OverviewTab'
+import { GoalsTab }      from './components/GoalsTab'
+import { ProjectionTab } from './components/ProjectionTab'
+import { fmt }           from './utils/formatters'
+import styles            from './App.module.css'
 
 const TABS = [
-  { id: 'overview',   label: 'Overview' },
-  { id: 'metas',      label: 'Metas' },
-  { id: 'projeção',   label: 'Projeção' },
+  { id: 'perfil',   label: 'Perfil' },
+  { id: 'overview', label: 'Overview' },
+  { id: 'metas',    label: 'Metas' },
+  { id: 'projeção', label: 'Projeção' },
 ]
 
 export default function App() {
   const { state, calc, update, updateGoal, reset } = useFinancialPlan()
-  const [activeTab, setActiveTab] = useState('overview')
+  const [activeTab, setActiveTab] = useState('perfil')
   const { totalFV, totalGoal, gap, progressPct } = calc
   const onTarget = gap <= 0
 
   return (
     <div className={styles.root}>
-      {/* Header */}
       <header className={styles.header}>
-        <div className={styles.eyebrow}>Planejamento Financeiro · {state.horizonYears} Anos</div>
+        <div className={styles.eyebrow}>Planejador Financeiro · {state.horizonYears} Anos</div>
         <h1 className={styles.title}>
-          Da Graduação<br />
-          <em className={styles.titleAccent}>à Liberdade</em>
+          Planejador<br />
+          <em className={styles.titleAccent}>Financeiro</em>
         </h1>
-        <p className={styles.subtitle}>{state.currentAge} anos → {state.currentAge + state.horizonYears} anos · Empreendedorismo em Tech</p>
+        <p className={styles.subtitle}>
+          {state.currentAge} anos → {state.currentAge + state.horizonYears} anos
+          {' · '}{state.careerStage}{' · '}{state.fieldOfWork}
+        </p>
       </header>
 
       <main className={styles.main}>
-        {/* Status card */}
         <div className={styles.statusCard}>
           <div className={styles.statusTop}>
             <div>
@@ -65,7 +68,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* Tabs */}
         <nav className={styles.tabs}>
           {TABS.map(t => (
             <button
@@ -78,13 +80,13 @@ export default function App() {
           ))}
         </nav>
 
-        {/* Tab content */}
-        {activeTab === 'overview'  && <OverviewTab   state={state} calc={calc} update={update} />}
-        {activeTab === 'metas'     && <GoalsTab      state={state} calc={calc} updateGoal={updateGoal} />}
-        {activeTab === 'projeção'  && <ProjectionTab state={state} calc={calc} />}
+        {activeTab === 'perfil'   && <ProfileTab    state={state} update={update} />}
+        {activeTab === 'overview' && <OverviewTab   state={state} calc={calc} update={update} />}
+        {activeTab === 'metas'    && <GoalsTab      state={state} calc={calc} updateGoal={updateGoal} />}
+        {activeTab === 'projeção' && <ProjectionTab state={state} calc={calc} />}
 
         <p className={styles.disclaimer}>
-          Projeção simplificada · Não considera inflação nem IR sobre rendimentos
+          Projeção simplificada · Não considera IR sobre rendimentos
           {' · '}
           <button className={styles.resetBtn} onClick={reset}>Resetar</button>
         </p>

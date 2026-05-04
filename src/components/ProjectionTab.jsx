@@ -1,8 +1,9 @@
-import { fmt } from '../utils/formatters'
+import { fmt, fmtShort } from '../utils/formatters'
 import styles from './Tab.module.css'
 
 export function ProjectionTab({ state, calc }) {
-  const { projection, milestones, totalGoal } = calc
+  const { projection, milestones, totalGoal, totalFVReal } = calc
+  const { horizonYears, currentAge } = state
 
   return (
     <div>
@@ -16,22 +17,38 @@ export function ProjectionTab({ state, calc }) {
             </div>
             <div style={{ textAlign: 'right' }}>
               <div className={styles.rowValue} style={{ color: 'var(--gold)' }}>
-                {m.year ? `Ano ${m.year}` : '> 15 anos'}
+                {m.year ? `Ano ${m.year}` : `> ${horizonYears} anos`}
               </div>
               <div className={styles.rowSub}>{m.age ? `${m.age} anos` : 'Fora do prazo'}</div>
             </div>
           </div>
         ))}
+        <div className={styles.divider} />
+        <div className={styles.row}>
+          <div>
+            <div className={styles.rowLabel}>Valor real ao final</div>
+            <div className={styles.rowSub}>Poder de compra hoje · {currentAge + horizonYears} anos</div>
+          </div>
+          <span className={styles.rowValue} style={{ color: 'var(--blue)' }}>{fmt(totalFVReal)}</span>
+        </div>
       </div>
 
       <div className={styles.card}>
         <div className={styles.cardTitle}>Evolução ano a ano</div>
         <div style={{ overflowX: 'auto' }}>
-          <table className={styles.table}>
+          <table className={styles.table} style={{ minWidth: 560 }}>
             <thead>
               <tr>
-                {['Ano', 'Idade', 'Patrimônio'].map(h => (
-                  <th key={h} className={styles.th} style={{ textAlign: h === 'Patrimônio' ? 'right' : 'left' }}>{h}</th>
+                {[
+                  { label: 'Ano',    align: 'left'  },
+                  { label: 'Idade',  align: 'left'  },
+                  { label: 'Salário', align: 'right' },
+                  { label: 'Aporte', align: 'right' },
+                  { label: 'Nominal', align: 'right' },
+                  { label: 'Real',   align: 'right' },
+                  { label: '% Meta', align: 'right' },
+                ].map(({ label, align }) => (
+                  <th key={label} className={styles.th} style={{ textAlign: align }}>{label}</th>
                 ))}
               </tr>
             </thead>
@@ -40,10 +57,26 @@ export function ProjectionTab({ state, calc }) {
                 const isGoal = row.balance >= totalGoal && (projection[i - 1]?.balance ?? 0) < totalGoal
                 return (
                   <tr key={row.year} style={{ background: isGoal ? 'var(--green-bg)' : 'transparent' }}>
-                    <td className={styles.td} style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{row.year}</td>
-                    <td className={styles.td} style={{ color: 'var(--text-sub)' }}>{row.age}</td>
-                    <td className={styles.td} style={{ textAlign: 'right', color: row.balance >= totalGoal ? 'var(--green)' : 'var(--gold)', fontFamily: 'var(--font-mono)' }}>
-                      {fmt(row.balance)} {isGoal ? '✓' : ''}
+                    <td className={styles.td} style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                      {row.year}
+                    </td>
+                    <td className={styles.td} style={{ color: 'var(--text-sub)' }}>
+                      {row.age}
+                    </td>
+                    <td className={styles.td} style={{ textAlign: 'right', fontFamily: 'var(--font-mono)', color: 'var(--text-sub)' }}>
+                      {fmtShort(row.salary)}
+                    </td>
+                    <td className={styles.td} style={{ textAlign: 'right', fontFamily: 'var(--font-mono)', color: 'var(--gold-dark)' }}>
+                      {fmtShort(row.annualContrib)}
+                    </td>
+                    <td className={styles.td} style={{ textAlign: 'right', fontFamily: 'var(--font-mono)', color: row.balance >= totalGoal ? 'var(--green)' : 'var(--gold)' }}>
+                      {fmtShort(row.balance)}{isGoal ? ' ✓' : ''}
+                    </td>
+                    <td className={styles.td} style={{ textAlign: 'right', fontFamily: 'var(--font-mono)', color: 'var(--blue)' }}>
+                      {fmtShort(row.realBalance)}
+                    </td>
+                    <td className={styles.td} style={{ textAlign: 'right', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+                      {row.pctOfGoal.toFixed(0)}%
                     </td>
                   </tr>
                 )
